@@ -1,26 +1,39 @@
 import { createContext, useEffect, useState } from "react";
-
+import { useCookies } from "react-cookie";
 export const TodoContext = createContext();
 
 const TODO_LS_KEY = "todos";
+const TODO_COOKIE_NAME = "todos_cookie";
+const TODO_SESSION_KEY = "todos_session";
 
 export const TodoProvider = ({ children }) => {
-  // const [countId, setCountId] = useState(0);
+  // 쿠키 라이브러리 사용
+  const [cookies, setCookie, removeCookie] = useCookies([TODO_COOKIE_NAME]);
   const [todoList, setTodoList] = useState([]);
   const addTodo = formData => {
     console.log(formData);
     const newTodoData = [...todoList, { ...formData, id: Date.now() }];
     setTodoList(newTodoData);
-    // setCountId(prev => prev + 1);
-    // Local Storage에 보관하자.
+    // 로컬에 저장함 (합당)
     localStorage.setItem(TODO_LS_KEY, JSON.stringify([...newTodoData]));
-    // localStorage.setItem(TODO_LS_KEY, JSON.stringify([...todoList]));
+    // 세션에 저장
+    sessionStorage.setItem(TODO_SESSION_KEY, JSON.stringify([...newTodoData]));
+    // 쿠키에 저장함 (서버자료 보관이 아니라서 비추천)
+    setCookie(TODO_COOKIE_NAME, newTodoData, {
+      path: "/",
+      maxAge: 1 * 24 * 60 * 60,
+    });
   };
 
   const deleteTodo = id => {
     const newList = todoList.filter(item => item.id !== id);
     setTodoList(newList);
     localStorage.setItem(TODO_LS_KEY, JSON.stringify([...newList]));
+    sessionStorage.setItem(TODO_SESSION_KEY, JSON.stringify([...newList]));
+    setCookie(TODO_COOKIE_NAME, newList, {
+      path: "/",
+      maxAge: 1 * 24 * 60 * 60,
+    });
     alert(`${id}삭제했습니다.`);
   };
 
@@ -34,33 +47,50 @@ export const TodoProvider = ({ children }) => {
     });
     setTodoList(newTodoData);
     localStorage.setItem(TODO_LS_KEY, JSON.stringify([...newTodoData]));
+    sessionStorage.setItem(TODO_SESSION_KEY, JSON.stringify([...newTodoData]));
+    setCookie(TODO_COOKIE_NAME, newTodoData, {
+      path: "/",
+      maxAge: 1 * 24 * 60 * 60,
+    });
   };
   const resetTodo = () => {
-    localStorage.clear(TODO_LS_KEY);
     setTodoList([]);
+    // 로컬 삭제
+    localStorage.clear(TODO_LS_KEY);
+    sessionStorage.clear(TODO_SESSION_KEY);
+    // 쿠키 삭제
+    removeCookie(TODO_COOKIE_NAME);
   };
-  // // 상태가 바뀌면 실행하고 싶은 일이 있다.
-  // useEffect(() => {
-  //   localStorage.setItem(TODO_LS_KEY, JSON.stringify(todoList));
-  //   return;
-  // }, [todoList]);
 
-  // Context 가 화면에 출력될 때, Local Storage 에서 값을 읽어온다.
-  // 이때 Key 는 TODO_LS_KEY 에 담긴 값을 이용해서 가져옮.
   useEffect(() => {
-    // 웹브라우저 Local Storage 에 값을 읽어들임
     const todos = localStorage.getItem(TODO_LS_KEY);
+    const todosSession = sessionStorage.getItem(TODO_SESSION_KEY);
+    //쿠기 읽기
+    const todosCookie = cookies[TODO_COOKIE_NAME];
+    //쿠키 초기화
+    if (todosCookie) {
+      setTodoList(todosCookie);
+    } else {
+      setCookie(TODO_COOKIE_NAME, [], {
+        path: "/",
+        maxAge: 1 * 24 * 60 * 60,
+      });
+    }
+    // 로컬 초기화
     if (todos) {
-      //있을 때
-
       const datas = JSON.parse(todos);
       setTodoList(datas);
-      // setCountId();
+    } else {
+      // 없을 때
+      localStorage.setItem(TODO_LS_KEY, JSON.stringify(todoList));
+    }
+    if (todosSession) {
+      const datas = JSON.parse(todosSession);
+      setTodoList(datas);
     } else {
       // 없을 때
       alert("없네요.");
-      localStorage.setItem(TODO_LS_KEY, JSON.stringify(todoList));
-      // setCountId(0);
+      sessionStorage.setItem(TODO_SESSION_KEY, JSON.stringify(todoList));
     }
     return () => {};
   }, []);
