@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { TodoContext } from "../../contexts/TodoContext";
 
-function TodoDetail({ todoList }) {
+function TodoDetail() {
+  const { todoList } = useContext(TodoContext);
   // js로 path 이동하기
   const navigate = useNavigate();
   const [searchParams, _] = useSearchParams();

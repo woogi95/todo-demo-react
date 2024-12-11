@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { TODO_MOCK_DATA } from "../../constants/mockdata";
+import { TodoContext } from "../../contexts/TodoContext";
 
 const initTodo = {
   id: 0,
@@ -11,7 +11,8 @@ const initTodo = {
   complete: 0,
   privacy: 0,
 };
-function TodoEdit({ todoList, setTodoList }) {
+function TodoEdit() {
+  const { todoList, updateTodo } = useContext(TodoContext);
   const navigate = useNavigate();
   // useState 화면 리랜더링
 
@@ -36,23 +37,10 @@ function TodoEdit({ todoList, setTodoList }) {
     });
   };
 
-  const postTodo = () => {
-    console.log("formData ", formData);
-    const newTodoData = todoList.map(item => {
-      if (formData.id === item.id) {
-        return formData;
-      } else {
-        return item;
-      }
-    });
-
-    setTodoList(newTodoData);
-  };
-
   const handleSubmit = e => {
     // 새로고침하면 입력중 자료 모두 초기화
     e.preventDefault();
-    postTodo();
+    updateTodo();
     alert("내용이 수정되었습니다.");
     navigate(`/todo/detail?id=${formData.id}`);
   };

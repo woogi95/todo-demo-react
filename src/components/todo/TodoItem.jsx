@@ -1,8 +1,11 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { TodoContext } from "../../contexts/TodoContext";
 
-const TodoItem = ({ item, deleteTodo }) => {
+const TodoItem = ({ item }) => {
+  const { deleteTodo } = useContext(TodoContext);
   return (
-    <div>
+    <div key={item.id}>
       <Link to={`/todo/detail?id=${item.id}`}>{item.title}</Link> {item.author}{" "}
       {item.date}
       <br />

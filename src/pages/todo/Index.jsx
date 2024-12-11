@@ -1,15 +1,14 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import TodoItem from "../../components/todo/TodoItem";
 import { useNavigate } from "react-router-dom";
+import { TodoContext } from "../../contexts/TodoContext";
 
-function Index({ todoList, setTodoList }) {
+function Index() {
+  // Context 사용함.
+  const { todoList } = useContext(TodoContext);
+  console.log("todoList ", todoList);
   const navigate = useNavigate();
-  console.log("todoList", todoList);
-  const deleteTodo = id => {
-    const newList = todoList.filter(item => item.id !== id);
-    setTodoList(newList);
-    alert(`${id}삭제했습니다.`);
-  };
+
   const handleClickAdd = () => {
     navigate(`/todo/add`);
   };
@@ -25,7 +24,7 @@ function Index({ todoList, setTodoList }) {
           {todoList.map(item => {
             return (
               <li key={item.id}>
-                <TodoItem item={item} deleteTodo={deleteTodo} />
+                <TodoItem item={item} />
               </li>
             );
           })}
