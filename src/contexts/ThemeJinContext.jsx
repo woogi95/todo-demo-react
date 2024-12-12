@@ -5,9 +5,9 @@ export const ThemeJinContext = createContext();
 const LS_THEME_COOKIE = "themecookie";
 export const ThemeJinProvider = ({ children }) => {
   const [cookies, setCookie] = useCookies([LS_THEME_COOKIE]);
-  const [theme, setTheme] = useState("green");
+  const [theme, setTheme] = useState("white");
   const handleTheme = () => {
-    const nowTheme = theme === "green" ? "hotpink" : "green";
+    const nowTheme = theme === "white" ? "skyblue" : "white";
     setTheme(nowTheme);
     localStorage.setItem("theme", JSON.stringify(nowTheme));
     setCookie(LS_THEME_COOKIE, theme, {

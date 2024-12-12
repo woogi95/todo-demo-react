@@ -9,6 +9,9 @@ import Layout from "./components/Layout";
 import { TodoProvider } from "./contexts/TodoContext";
 import { UserProvider } from "./contexts/UserContext";
 import { ThemeJinProvider } from "./contexts/ThemeJinContext";
+import Joinyup from "./pages/member/JoinYup";
+import LoginPage from "./pages/member/LoginPage";
+import Schedule from "./pages/calendar/Schedule";
 
 function App() {
   return (
@@ -20,6 +23,10 @@ function App() {
               <Routes>
                 {/* 소개 */}
                 <Route path="/" element={<About />} />
+                <Route path="/member" element={<Joinyup />} />
+                <Route path="/loginpage" element={<LoginPage />} />
+                <Route path="/schedule" element={<Schedule />} />
+
                 {/* Todo 중첩 */}
                 <Route path="/todo">
                   <Route index element={<Index />}></Route>

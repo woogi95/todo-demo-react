@@ -14,8 +14,11 @@ const Header = () => {
         <FaHeartCircleCheck />
         Home
       </Link>
-      <Link to={"/"}>About </Link>
-      <Link to={"/todo"}>Todo </Link>
+      <Link to={"/"}>| About |</Link>
+      <Link to={"/schedule"}> 스케줄 |</Link>
+      <Link to={"/todo"}> Todo |</Link>
+      <Link to={"/loginPage"}> 로그인 |</Link>
+      <Link to={"/member"}> 회원가입 |</Link>
       <button onClick={() => handleChange(login)}>
         {login === false ? "로그인" : "로그아웃"}
       </button>
