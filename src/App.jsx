@@ -12,6 +12,7 @@ import { ThemeJinProvider } from "./contexts/ThemeJinContext";
 import Joinyup from "./pages/member/JoinYup";
 import LoginPage from "./pages/member/LoginPage";
 import Schedule from "./pages/calendar/Schedule";
+import RangeSchedule from "./pages/calendar/RangeSchedule";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
                 <Route path="/member" element={<Joinyup />} />
                 <Route path="/loginpage" element={<LoginPage />} />
                 <Route path="/schedule" element={<Schedule />} />
+                <Route path="/range" element={<RangeSchedule />} />
 
                 {/* Todo 중첩 */}
                 <Route path="/todo">

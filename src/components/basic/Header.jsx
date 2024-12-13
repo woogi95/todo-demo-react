@@ -16,6 +16,7 @@ const Header = () => {
       </Link>
       <Link to={"/"}>| About |</Link>
       <Link to={"/schedule"}> 스케줄 |</Link>
+      <Link to={"/range"}> 일정 |</Link>
       <Link to={"/todo"}> Todo |</Link>
       <Link to={"/loginPage"}> 로그인 |</Link>
       <Link to={"/member"}> 회원가입 |</Link>
